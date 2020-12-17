@@ -1,4 +1,17 @@
-# Dependencies directory
+# vs code
+.vscode
 
+__pycache__
+venv
+
+# Dependencies directory
 env/
 env
+
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehtumbs.db
+Thumbs.db
