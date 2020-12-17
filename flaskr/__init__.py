@@ -1,9 +1,11 @@
 from flask import Flask, jsonify
 from flask_cors import CORS  
 
+from models import setup_db, Owner
+
 def create_app(test_config=None):
     app = Flask(__name__)
-
+    setup_db(app)
     CORS(app)
 
     @app.after_request
@@ -20,4 +22,18 @@ def create_app(test_config=None):
     def smiley():
         return ':)'
 
+    @app.route('/devices/<int:device_id>', methods=['GET', 'POST'])
+    def retrieve_device(device_id):
+        return 'Device %d' % device_id
+
+    @app.route('/owners', methods=['GET'])
+    def retrieve_owners():
+        owners = Owner.query.all()
+        formatted_owner = [owner.format() for owner in owners]
+
+        return jsonify({
+            'success': True,
+            'owners': formatted_owner
+        })
+ 
     return app
