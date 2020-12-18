@@ -1,7 +1,9 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS  
 
-from models import setup_db, Owner, Item
+from models import setup_db, Owner, Item, Item_image, Item_type, Item_info, Inventory_location, Seller, Address
+
+ITEMS_PER_PAGE = 10
 
 def create_app(test_config=None):
     app = Flask(__name__)
@@ -47,3 +49,12 @@ def create_app(test_config=None):
         })
  
     return app
+
+def paginate_items(request, selection):
+    
+    page = request.args.get('page', 1, type=int)
+    start = (page - 1) * ITEMS_PER_PAGE
+    end = start + ITEMS_PER_PAGE
+    items = [item.format() for item in selection]
+
+    return items[start:end]
