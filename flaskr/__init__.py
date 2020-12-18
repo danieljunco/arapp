@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from flask_cors import CORS  
 
-from models import setup_db, Owner
+from models import setup_db, Owner, Item
 
 def create_app(test_config=None):
     app = Flask(__name__)
@@ -34,6 +34,16 @@ def create_app(test_config=None):
         return jsonify({
             'success': True,
             'owners': formatted_owner
+        })
+
+    @app.route('/items', methods=['GET'])
+    def retrieve_items():
+        items = Item.query.all()
+        formatted_items = [item.format() for item in items]
+
+        return jsonify({
+            'success': True,
+            'items': formatted_items
         })
  
     return app
