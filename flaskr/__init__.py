@@ -31,7 +31,7 @@ def create_app(test_config=None):
         current_items = paginate_items(request, item_types)
         
 
-        return jsonify(current_items)
+        return jsonify(current_items), 200
     
     @app.route('/items/types', methods=['POST'])
     def create_item_types():
@@ -42,12 +42,10 @@ def create_app(test_config=None):
         if new_name is None:
             abort(400)
         
-        type = Item_type(name=new_name)
-        type.insert()
+        item_type = Item_type(name=new_name)
+        item_type.insert()
 
-        return jsonify({
-            'id': type.id
-        })
+        return jsonify(item_type.format()), 200
 
     @app.route('/items/types/<int:item_type_id>', methods=['PATCH'])
     def edit_item_type(item_type_id):
@@ -66,26 +64,28 @@ def create_app(test_config=None):
         except:
             abort(500)
 
+    @app.route('/items/types/<int:item_type_id>', methods=['DELETE'])
+    def remove_item_type(item_type_id):
+        try:
+            item_type = Item_type.query.filter(Item_type.id == item_type_id).one_or_none()
+            item_type.delete()
+            return jsonify(item_type.format()), 200
+        except:
+            abort(404)
 
     @app.route('/owners', methods=['GET'])
     def retrieve_owners():
         owners = Owner.query.all()
-        formatted_owner = [owner.format() for owner in owners]
+        current_items = paginate_items(request, owners)
 
-        return jsonify({
-            'success': True,
-            'owners': formatted_owner
-        })
+        return jsonify(current_items), 200
 
     @app.route('/items', methods=['GET'])
     def retrieve_items():
         items = Item.query.all()
-        formatted_items = [item.format() for item in items]
+        current_items = paginate_items(request, items)
 
-        return jsonify({
-            'success': True,
-            'items': formatted_items
-        })
+        return jsonify(current_items), 200
 
     ## Error Handling
 

@@ -61,7 +61,9 @@ class Owner(db.Model):
         return {
             'id': self.id,
             'email': self.email,
-            'name': self.name
+            'name': self.name,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
         }
 
 class Item(db.Model):
@@ -115,7 +117,9 @@ class Item(db.Model):
             'description': self.description,
             'sku': self.sku,
             'user_id': self.user_id,
-            'item_type_id': self.item_type_id
+            'item_type_id': self.item_type_id,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
         }
 
 class Item_image(db.Model):
@@ -158,7 +162,9 @@ class Item_image(db.Model):
         return {
             'id': self.id,
             'image_url': self.image_url,
-            'item_id': self.item_id
+            'item_id': self.item_id,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
         }
 
 class Item_type(db.Model):
@@ -199,7 +205,9 @@ class Item_type(db.Model):
     def format(self):
         return {
             'id': self.id,
-            'name': self.name
+            'name': self.name,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
         }
 
 class Item_info(db.Model):
@@ -251,7 +259,9 @@ class Item_info(db.Model):
             'purchase_price': self.purchase_price,
             'seller_id': self.seller_id,
             'item_id': self.item_id,
-            'inventory_location': self.inventory_location_id
+            'inventory_location': self.inventory_location_id,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
         }
         
 
@@ -302,7 +312,9 @@ class Inventory_location(db.Model):
             'name': self.name,
             'address': self.address,
             'description': self.description,
-            'image_url': self.image_url
+            'image_url': self.image_url,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
         }
 
 class Seller(db.Model):
@@ -355,7 +367,9 @@ class Seller(db.Model):
             'logo_url': self.logo_url,
             'website_url': self.website_url,
             'email': self.email,
-            'address_id': self.id
+            'address_id': self.id,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
         }
 
 class Address(db.Model):
@@ -402,5 +416,7 @@ class Address(db.Model):
             'id': self.id,
             'email': self.street_address,
             'city': self.city,
-            'zipcode': self.zipcode
+            'zipcode': self.zipcode,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
         }
