@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 import json, sys
 from sqlalchemy.orm import backref, relation, relationship
 from sqlalchemy.sql.sqltypes import DateTime, Float
+from sqlalchemy.sql import func
 
 database_name = "arar-inventory"
 database_path = "postgres://{}@{}/{}".format('danieljunco', 'localhost:5432', database_name)
@@ -25,6 +26,8 @@ class Owner(db.Model):
     id = Column(Integer, primary_key=True)
     email = Column(String, nullable=False)
     name = Column(String, nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.transaction_timestamp())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.transaction_timestamp())
     items = relationship("Item", backref="owners", lazy=True)
 
     def __init__(self, email, name):
@@ -70,6 +73,8 @@ class Item(db.Model):
     sku = Column(String, nullable=True)
     user_id = Column(Integer, ForeignKey("owners.id", ondelete="CASCADE"), nullable=False)
     item_type_id = Column(Integer, ForeignKey("item_types.id", ondelete="CASCADE"), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.transaction_timestamp())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.transaction_timestamp())
     items_info = relationship("Item_info", backref="items", lazy=True)
     item_images = relationship("Item_image", backref="items", lazy=True)
 
@@ -109,7 +114,8 @@ class Item(db.Model):
             'name': self.name,
             'description': self.description,
             'sku': self.sku,
-            'user_id': self.user_id
+            'user_id': self.user_id,
+            'item_type_id': self.item_type_id
         }
 
 class Item_image(db.Model):
@@ -118,6 +124,8 @@ class Item_image(db.Model):
     id = Column(Integer, primary_key=True)
     image_url = Column(String, nullable=False)
     item_id = Column(Integer, ForeignKey("items.id", ondelete='CASCADE'), nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.transaction_timestamp())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.transaction_timestamp())
 
     def __init__(self, image_url, item_id):
         self.image_url = image_url,
@@ -158,6 +166,8 @@ class Item_type(db.Model):
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.transaction_timestamp())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.transaction_timestamp())
     items = relationship("Item", backref="item_types", lazy=True)
 
     def __init__(self, name):
@@ -201,6 +211,8 @@ class Item_info(db.Model):
     seller_id = Column(Integer, ForeignKey('sellers.id', ondelete='CASCADE'), nullable=True)
     item_id = Column(Integer, ForeignKey('items.id', ondelete='CASCADE'), nullable=False)
     inventory_location_id = Column(Integer, ForeignKey('inventory_locations.id', ondelete='CASCADE'), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.transaction_timestamp())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.transaction_timestamp())
 
     def __init__(self, purchase_date, purchase_price, seller_id, item_id, inventory_location_id):
         self.purchase_date = purchase_date
@@ -251,6 +263,8 @@ class Inventory_location(db.Model):
     address = Column(String, nullable=False)
     description = Column(String, nullable=True)
     image_url = Column(String, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.transaction_timestamp())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.transaction_timestamp())
     items_info = relationship("Item_info", backref="location", lazy=True)
 
     def __init__(self, name, address, description, image_url):
@@ -300,6 +314,8 @@ class Seller(db.Model):
     website_url = Column(String, nullable=True)
     email = Column(String, nullable=True)
     address_id = Column(Integer, ForeignKey("addresses.id", ondelete="CASCADE"), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.transaction_timestamp())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.transaction_timestamp())
     items_info = relationship("Item_info", backref="sellers", lazy=True)
 
     def __init__(self, name, logo_url, website_url, email, address_id):
@@ -349,6 +365,8 @@ class Address(db.Model):
     street_address = Column(String, nullable=False)
     city = Column(String, nullable=False)
     zipcode = Column(String, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.transaction_timestamp())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.transaction_timestamp())
     sellers = relationship("Seller", backref="addresses", lazy=True)
 
     def __init__(self, street_address, city, zipcode):
