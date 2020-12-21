@@ -11,10 +11,6 @@ from models import setup_db, Owner, Item, Item_image, Item_type, Item_info, Inve
 
 ITEMS_PER_PAGE = 10
 
-AUTH0_DOMAIN = 'arar.eu.auth0.com'
-ALGORITHMS = ['RS256']
-API_AUDIENCE = 'inventory'
-
 def create_app(test_config=None):
     app = Flask(__name__)
     setup_db(app)

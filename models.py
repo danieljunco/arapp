@@ -7,8 +7,7 @@ from sqlalchemy.orm import backref, relation, relationship
 from sqlalchemy.sql.sqltypes import DateTime, Float
 from sqlalchemy.sql import func
 
-database_name = "arar-inventory"
-database_path = "postgres://{}@{}/{}".format('danieljunco', 'localhost:5432', database_name)
+database_path = os.environ["DATABASE_URL"]
 
 db = SQLAlchemy()
 
