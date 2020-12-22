@@ -20,11 +20,14 @@ $ cd project_directory_path/
 $ virtualenv env
 $ source env/bin/activate
 ```
-4. Install the dependencies for this project and set up environment variables:
+3. Set up environment variables:
 ```
 $ source setup.sh
 ```
-
+4. Install dependencies
+```
+pip3 install -r requirements.txt
+```
 ## Setup
 1. Create a PostgreSQL database locally and connect to it from setup.sh:
 ```
