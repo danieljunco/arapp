@@ -6,7 +6,7 @@ Ararapp it's an app that tracks the inventory of differrent devices that are ren
 
 #### Where can I access the app?
 Arapp has been deployed to Heroku and is currently working at this link:</br> 
-<strong>[https://arar-dev.herokuapp.com/](https://arar-dev.herokuapp.com/)</strong>
+<strong>[https://arar-staging.herokuapp.com/](https://arar-staging.herokuapp.com/)</strong>
 
 
 ## Dependencies
