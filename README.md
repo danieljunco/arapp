@@ -6,7 +6,7 @@ Ararapp it's an app that tracks the inventory of differrent devices that are ren
 
 #### Where can I access the app?
 Arapp has been deployed to Heroku and is currently working at this link:</br> 
-<strong>[]()</strong>
+<strong>[https://arar-dev.herokuapp.com/](https://arar-dev.herokuapp.com/)</strong>
 
 
 ## Dependencies
@@ -20,9 +20,13 @@ $ cd project_directory_path/
 $ virtualenv env
 $ source env/bin/activate
 ```
-4. Install the dependencies for this project and set up environment variables:
+3. Set up environment variables:
 ```
 $ source setup.sh
+```
+4. Install dependencies
+```
+pip install -r requirements.txt
 ```
 
 ## Setup
