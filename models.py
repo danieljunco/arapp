@@ -18,7 +18,7 @@ def setup_db(app, database_path=database_path):
     db.init_app(app)
     migrate = Migrate(app, db)
     # db.drop_all()
-    db.create_all()
+    # db.create_all()
 
 class Owner(db.Model):
     __tablename__ = "owners"
