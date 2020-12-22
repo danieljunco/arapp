@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: ac9332db67f0
-Revises: 66680b017dc6
-Create Date: 2020-12-18 16:39:11.953171
+Revision ID: 9179e1dab841
+Revises: 
+Create Date: 2020-12-22 01:07:30.678386
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'ac9332db67f0'
-down_revision = '66680b017dc6'
+revision = '9179e1dab841'
+down_revision = None
 branch_labels = None
 depends_on = None
 
@@ -23,6 +23,8 @@ def upgrade():
     sa.Column('street_address', sa.String(), nullable=False),
     sa.Column('city', sa.String(), nullable=False),
     sa.Column('zipcode', sa.String(), nullable=True),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('transaction_timestamp()'), nullable=True),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('inventory_locations',
@@ -31,11 +33,36 @@ def upgrade():
     sa.Column('address', sa.String(), nullable=False),
     sa.Column('description', sa.String(), nullable=True),
     sa.Column('image_url', sa.String(), nullable=True),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('transaction_timestamp()'), nullable=True),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('item_types',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('transaction_timestamp()'), nullable=True),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('owners',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('email', sa.String(), nullable=False),
+    sa.Column('name', sa.String(), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('transaction_timestamp()'), nullable=True),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('items',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('name', sa.String(), nullable=False),
+    sa.Column('description', sa.String(), nullable=False),
+    sa.Column('sku', sa.String(), nullable=True),
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('item_type_id', sa.Integer(), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('transaction_timestamp()'), nullable=True),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
+    sa.ForeignKeyConstraint(['item_type_id'], ['item_types.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['user_id'], ['owners.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('sellers',
@@ -45,6 +72,8 @@ def upgrade():
     sa.Column('website_url', sa.String(), nullable=True),
     sa.Column('email', sa.String(), nullable=True),
     sa.Column('address_id', sa.Integer(), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('transaction_timestamp()'), nullable=True),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
     sa.ForeignKeyConstraint(['address_id'], ['addresses.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
@@ -52,6 +81,8 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('image_url', sa.String(), nullable=False),
     sa.Column('item_id', sa.Integer(), nullable=True),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('transaction_timestamp()'), nullable=True),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
     sa.ForeignKeyConstraint(['item_id'], ['items.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
@@ -62,25 +93,23 @@ def upgrade():
     sa.Column('seller_id', sa.Integer(), nullable=True),
     sa.Column('item_id', sa.Integer(), nullable=False),
     sa.Column('inventory_location_id', sa.Integer(), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('transaction_timestamp()'), nullable=True),
+    sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
     sa.ForeignKeyConstraint(['inventory_location_id'], ['inventory_locations.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['item_id'], ['items.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['seller_id'], ['sellers.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
-    op.add_column('items', sa.Column('item_type_id', sa.Integer(), nullable=False))
-    op.add_column('items', sa.Column('sku', sa.String(), nullable=True))
-    op.create_foreign_key(None, 'items', 'item_types', ['item_type_id'], ['id'], ondelete='CASCADE')
     # ### end Alembic commands ###
 
 
 def downgrade():
     # ### commands auto generated by Alembic - please adjust! ###
-    op.drop_constraint(None, 'items', type_='foreignkey')
-    op.drop_column('items', 'sku')
-    op.drop_column('items', 'item_type_id')
     op.drop_table('items_info')
     op.drop_table('item_images')
     op.drop_table('sellers')
+    op.drop_table('items')
+    op.drop_table('owners')
     op.drop_table('item_types')
     op.drop_table('inventory_locations')
     op.drop_table('addresses')
