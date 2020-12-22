@@ -6,9 +6,9 @@ from jose import jwt
 from urllib.request import urlopen
 
 
-AUTH0_DOMAIN = os.environ["AUTH0_DOMAIN"]
-ALGORITHMS = os.environ["ALGORITHMS"]
-API_AUDIENCE = os.environ["API_AUDIENCE"]
+AUTH0_DOMAIN = "arar.eu.auth0.com"
+ALGORITHMS = ["RS256"]
+API_AUDIENCE = "inventory"
 
 ## AuthError Exception
 '''
