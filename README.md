@@ -3,6 +3,10 @@
 
 Ararapp it's an app that tracks the inventory of differrent devices that are rented in different companies.
 
+#### Motivation
+
+I developed this project to make use of the knowledge I acquired in this nanodegree and combine it with my frontend skills so I can build a whole app that will help to track all the diferent devices that are rented across the city.
+
 
 #### Where can I access the app?
 Arapp has been deployed to Heroku and is currently working at this link:</br> 
@@ -26,7 +30,7 @@ $ source setup.sh
 ```
 4. Install dependencies
 ```
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 ## Setup
@@ -42,9 +46,16 @@ flask db upgrade
 ```
 3. In Auth0, configure a single page web application and its API, relying on the environment variables in setup.sh.
 4. Start the development server:  
+#### On linux: export
 ```
 $ export FLASK_APP=app.py 
 $ export FLASK_ENV=development # enables debug mode  
+$ flask run --reload
+```
+#### On Windows: set
+```
+$ set FLASK_APP=app.py 
+$ set FLASK_ENV=development # enables debug mode  
 $ flask run --reload
 ```
 
@@ -74,11 +85,50 @@ To access this app's API, a user needs to be authenticated. Logging in with appr
 - Returns a list of all item
 - Roles authorized: all users
 - Sample: ```curl http://127.0.0.1:5000/items/types```
+- return 
+```
+{
+    "items": [
+        {
+            'id': 1,
+            'name': 'printer',
+            'created_at': 'Tue, 22 Dec 2020 14:50:42 GMT,
+            'updated_at': null
+        }
+    ],
+    "pagination": {
+        "currentPage": 1,
+        "itemsPerPage": 10,
+        "totalItems": 1,
+        "totalPages": 1
+    }
+}
+```
 
 #### GET /owners
 - Returns a list of all owners
 - Roles authorized: all users
 - Sample: ```curl http://127.0.0.1:5000/owners```
+- return 
+```
+{
+    "items": [
+        {
+            'id': 1,
+            'name': 'Ziggy',
+            'email': 'zi@ma.de',
+            'created_at': 'Tue, 22 Dec 2020 14:50:42 GMT,
+            'updated_at': null
+        }
+    ],
+    "pagination": {
+        "currentPage": 1,
+        "itemsPerPage": 10,
+        "totalItems": 1,
+        "totalPages": 1
+    }
+}
+```
 
 #### GET /inventory-locations
 - Returns a list of all inventory locations

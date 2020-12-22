@@ -44,7 +44,7 @@ def retrieve_item_types():
 def create_item_types(jwt):
     
     body = request.get_json()
-    new_name = body.get('name', None)
+    new_name = body.get('name')
 
     if new_name is None:
         abort(400)
@@ -93,8 +93,8 @@ def retrieve_owners(jwt):
 @requires_auth('post:owners')
 def create_owners(jwt):
     body = request.get_json()
-    new_email = body.get('email', None)
-    new_name = body.get('name', None)
+    new_email = body.get('email')
+    new_name = body.get('name')
 
     if new_email is None or new_name is None:
         abort(400)
@@ -143,8 +143,8 @@ def retrieve_inventory_locations():
 def create_inventory_location(jwt):
     
     body = request.get_json()
-    new_name = body.get('name', None)
-    new_address = body.get('address', None)
+    new_name = body.get('name')
+    new_address = body.get('address')
     new_description = body.get('description', '')
     new_image_url = body.get('image_url', '')
 
